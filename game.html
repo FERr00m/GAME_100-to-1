@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/vue.js" defer></script>
+  <script src="js/jquery-3.6.1.min.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <title>100 к 1</title>
+</head>
+<body id="app" v-cloak>
+  <audio class="audio" src="/music/inner_music.mp3" preload="auto" controls></audio>
+  <audio class="audio-win" src="/music/win.mp3"></audio>
+  <a href="./index.html" v-if="options.step < levels.length && stepEnd" @click="setData(true)" class="next-game">Следующая игра</a>
+  <div class="wrapper">
+    <div class="score-wrap">
+      <div class="score-table score-blue">
+        <div class="span">
+          {{ options.blueTeamScore }}
+        </div>
+
+      </div>
+      <button
+      v-if="options.step !== levels.length"
+      class="win-button jq-win-btn"
+      @click="calculateGame('blue')"
+      >Победитель!</button>
+    </div>
+    <div class="main-table">
+      <div class="total-score-wrap">
+        <div class="score-table total-score">
+          <div class="span jq-total-score">
+            {{ options.totalScore }}
+          </div>
+        </div>
+      </div>
+      <div class="play-table-wrap">
+        <div class="play-table-type blue">
+          <div class="step">
+            {{ levels[options.step - 1].symbol }}
+          </div>
+          <audio class="wrong-audio" src="/music/wrong.mp3"></audio>
+          <ul class="errors-wrap">
+            <li><span></span><span></span></li>
+            <li><span></span><span></span></li>
+            <li><span></span><span></span></li>
+          </ul>
+        </div>
+        <div class="play-table-main">
+          <audio ref="audio" src="/music/success.mp3"></audio>
+          <div class="answer-row scene" v-for="(answer, i) in levels[options.step - 1].answers">
+            <button @click="calculateGame('blue', answer.price)" v-if="options.step === levels.length && blueNotCalculated" class="last-step-btn blue"></button>
+            <div class="card" @click="flipCard">
+              <div class="card__face card__face--front">{{ i + 1 }}</div>
+              <div class="card__face card__face--back">
+                <div class="card-answer">{{ answer.text }}</div>
+                <div class="answer-price">{{ answer.price }}</div>
+              </div>
+            </div>
+            <button @click="calculateGame('red', answer.price)" v-if="options.step === levels.length && redNotCalculated" class="last-step-btn red"></button>
+          </div>
+
+        </div>
+        <div class="play-table-type red">
+          <div class="step">
+            {{ levels[options.step - 1].symbol }}
+          </div>
+          <ul class="errors-wrap">
+            <li><span></span><span></span></li>
+            <li><span></span><span></span></li>
+            <li><span></span><span></span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="score-wrap">
+      <div class="score-table score-red">
+        <div class="span">
+          {{ options.redTeamScore }}
+        </div>
+      </div>
+      <button
+      v-if="options.step !== levels.length"
+      class="win-button jq-win-btn"
+      @click="calculateGame('red')"
+      >Победитель!</button>
+    </div>
+  </div>
+<button class="reset-btn" @click="reset">reset</button>
+</body>
+</html>
