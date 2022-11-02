@@ -7,6 +7,7 @@ createApp({
       blueNotCalculated: true,
       redNotCalculated: true,
       stepEnd: false,
+      gameNumber: 1,
       options: { step: 1, blueTeamScore: 0, redTeamScore: 0, totalScore: 0 },
       levels: [
         {
@@ -162,10 +163,10 @@ createApp({
     async getLevels() {
       let url = new URL(window.location);
       let gameId = url.searchParams.get("game");
-      console.log(gameId);
-      let res = await fetch(`/data/game_0${gameId}.json`);
+      this.gameNumber = gameId;
+      let res = await fetch(`/data/game_0${this.gameNumber}.json`);
       res = await res.json();
-      console.log(res);
+
       this.levels = res;
     },
     playFile() {
@@ -176,16 +177,28 @@ createApp({
       let data = JSON.parse(localStorage.getItem("options"));
       return data;
     },
-    setData(step = false) {
-      localStorage.setItem(
-        "options",
-        JSON.stringify({
-          step: step ? this.options.step + 1 : this.options.step,
-          blueTeamScore: this.options.blueTeamScore,
-          redTeamScore: this.options.redTeamScore,
-          totalScore: this.options.totalScore,
-        })
-      );
+    setData(step = false, reset = false) {
+      if (reset) {
+        localStorage.setItem(
+          "options",
+          JSON.stringify({
+            step: 1,
+            blueTeamScore: 0,
+            redTeamScore: 0,
+            totalScore: 0,
+          })
+        );
+      } else {
+        localStorage.setItem(
+          "options",
+          JSON.stringify({
+            step: step ? this.options.step + 1 : this.options.step,
+            blueTeamScore: this.options.blueTeamScore,
+            redTeamScore: this.options.redTeamScore,
+            totalScore: this.options.totalScore,
+          })
+        );
+      }
     },
     calculateGame(teamWinner, price = 0) {
       document.querySelector(".audio-win").play();

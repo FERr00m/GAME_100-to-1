@@ -13,7 +13,7 @@
 <body id="app" v-cloak>
   <audio class="audio" src="/music/inner_music.mp3" preload="auto" controls></audio>
   <audio class="audio-win" src="/music/win.mp3"></audio>
-  <a href="./index.html" v-if="options.step < levels.length && stepEnd" @click="setData(true)" class="next-game">Следующая игра</a>
+  <a :href="'/game.html?game=' + gameNumber" v-if="options.step < levels.length && stepEnd" @click="setData(true)" class="next-game">Следующая игра</a>
   <div class="wrapper">
     <div class="score-wrap">
       <div class="score-table score-blue">
@@ -23,7 +23,7 @@
 
       </div>
       <button
-      v-if="options.step !== levels.length"
+      v-show="options.step !== levels.length && options.totalScore > 0"
       class="win-button jq-win-btn"
       @click="calculateGame('blue')"
       >Победитель!</button>
@@ -81,13 +81,14 @@
           {{ options.redTeamScore }}
         </div>
       </div>
-      <button
-      v-if="options.step !== levels.length"
-      class="win-button jq-win-btn"
-      @click="calculateGame('red')"
-      >Победитель!</button>
+        <button
+        v-if="options.step !== levels.length && options.totalScore > 0"
+        class="win-button jq-win-btn"
+        @click="calculateGame('red')"
+        >Победитель!</button>
     </div>
   </div>
+<a @click="setData(false, true)" class="back-link" href="/">К выбору игр</a>
 <button class="reset-btn" @click="reset">reset</button>
 </body>
 </html>

@@ -17,6 +17,18 @@ body {
 [v-cloak] {
   visibility: hidden;
 }
+.back-link {
+  position: absolute;
+  bottom: 10px;
+  left: 50px;
+}
+.promo-wrap {
+  max-width: 1300px;
+  margin: 0 auto;
+  text-align: center;
+  padding-top: 50px;
+  font-size: 3rem;
+}
 .last-step-btn {
   position: absolute;
   cursor: pointer;
@@ -105,13 +117,23 @@ body {
 .score-red {
   background-color: var(--red);
 }
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 5s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
 .win-button {
+  position: absolute;
+  top: 65%;
   padding: 1em 2em;
   background: #faf8ff;
   cursor: pointer;
   font-size: 1rem;
   display: inline-block;
-  position: relative;
   -webkit-transition: -webkit-transform .2s linear;
   transition: -webkit-transform .2s linear;
   -o-transition: transform .2s linear;
